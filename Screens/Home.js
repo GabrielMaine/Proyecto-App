@@ -1,12 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Button } from 'react-native'
 import Header from '../Components/Header'
 import Categories from '../Components/Categories/Categories'
+import Counter from '../Components/Globals/Counter'
 
-const Home = () => {
+const Home = ({navigation}) => {
+
   return (
     <View>
         <Header title="Home"/>
-        <Categories/>
+        <Categories navigation={navigation}/>
     </View>
   )
 }

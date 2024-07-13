@@ -1,66 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, Button, TextInput, FlatList, Modal } from 'react-native';
 import { useEffect, useState } from 'react';
-import Home from './Screens/Home';
-import Search from './Components/ItemListCategory/Search';
+import TabNavigator from './Navigation/TabNavigator';
+import { Provider } from 'react-redux';
+import Store from './Store';
 
 export default function App() {
 
-  const [inputData, setInputData] = useState('')
-  const [itemList, setItemList] = useState([])
-
-  const onHandlerChangeInput = (t) => setInputData(t)
-
-  const addInput = () => {
-    setItemList(currentItems => [
-      ...currentItems,
-      {id: Math.random().toString(), value:inputData}
-    ])
-    setInputData('')
-  }
-
-  const [modalView, setModalView] = useState(false)
-
   return (
-    <View style={styles.container}>
-      <Home/>
-      {/* <View style={styles.children}>
-          <TextInput
-            placeholder='Input'
-            onChangeText={onHandlerChangeInput}
-            value={inputData}
-          />
-          <Button 
-            title="Add"
-            onPress={addInput}
-          />
-      </View>
-      <View style={styles.children}>
-        <Button
-          title="CLEAR"
-          onPress={()=>setItemList([])}
-        />
-        <FlatList
-            data={itemList}
-            renderItem={({item}) => <Text>{item.id}: {item.value}</Text>}
-            keyExtractor={item=>item.id}
-            style={styles.flatList}
-          />
-      </View>
-      <View style={styles.children}>
-        <Modal
-        animationType='slide'
-        visible={modalView}
-        style={styles.children}
-        >
-          <Text>Modal</Text>
-        </Modal>
-        <Button
-        title="Modal"
-        onPress={()=>setModalView(!modalView)}
-        />
-      </View>       */}
-    </View>
+    <Provider store={Store}>
+      <TabNavigator />
+    </Provider>
   );
 }
 
@@ -84,3 +34,57 @@ const styles = StyleSheet.create({
     backgroundColor: 'green'
   }
 });
+
+  // const [inputData, setInputData] = useState('')
+  // const [itemList, setItemList] = useState([])
+
+  // const onHandlerChangeInput = (t) => setInputData(t)
+
+  // const addInput = () => {
+  //   setItemList(currentItems => [
+  //     ...currentItems,
+  //     {id: Math.random().toString(), value:inputData}
+  //   ])
+  //   setInputData('')
+  // }
+
+  // const [modalView, setModalView] = useState(false)
+
+
+
+      // {/* <View style={styles.children}>
+      //     <TextInput
+      //       placeholder='Input'
+      //       onChangeText={onHandlerChangeInput}
+      //       value={inputData}
+      //     />
+      //     <Button 
+      //       title="Add"
+      //       onPress={addInput}
+      //     />
+      // </View>
+      // <View style={styles.children}>
+      //   <Button
+      //     title="CLEAR"
+      //     onPress={()=>setItemList([])}
+      //   />
+      //   <FlatList
+      //       data={itemList}
+      //       renderItem={({item}) => <Text>{item.id}: {item.value}</Text>}
+      //       keyExtractor={item=>item.id}
+      //       style={styles.flatList}
+      //     />
+      // </View>
+      // <View style={styles.children}>
+      //   <Modal
+      //   animationType='slide'
+      //   visible={modalView}
+      //   style={styles.children}
+      //   >
+      //     <Text>Modal</Text>
+      //   </Modal>
+      //   <Button
+      //   title="Modal"
+      //   onPress={()=>setModalView(!modalView)}
+      //   />
+      // </View>       */}

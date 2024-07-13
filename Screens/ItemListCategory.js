@@ -1,28 +1,29 @@
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native'
 import {useState, useEffect} from 'react'
 import Header from '../Components/Header'
 import allProducts from '../Data/products.json'
 import Search from '../Components/ItemListCategory/Search'
+import { useSelector } from 'react-redux'
 
-const ItemListCategory = ({category}) => {
+const ItemListCategory = ({navigation, route}) => {
 
+    const {category} = route.params
     const [products, setProducts] = useState([])
     const [keyword, setKeyword] = useState("")
 
+    const productsFilteredByCategory = useSelector(state=>state.shopReducer.value.productsFilteredByCategory);
+
     useEffect(()=>{
-        if(category){
-            const categoryProducts = allProducts.filter(product=>product.category === category)
-            const filteredProducts = categoryProducts.filter(product=>product.title.includes(keyword))
-            setProducts(filteredProducts)
-        }else{
-            const filteredProducts = allProducts.filter(product=>product.title.includes(keyword))
-            setProducts(filteredProducts)
-        }
-    }, [category, keyword])
+        const filteredProducts = productsFilteredByCategory.filter(product=>product.title.toUpperCase().includes(keyword.toUpperCase()))
+        setProducts(filteredProducts)
+    }, [productsFilteredByCategory, keyword])
 
     return (
     <>
         <Header title={category||"Products"}/>
+        <Pressable onPress={()=>navigation.goBack()}>
+            <Text>Volver</Text>
+        </Pressable>
         <Search onSearch={setKeyword}/>
         <View>
             <FlatList

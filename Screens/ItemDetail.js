@@ -1,10 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const ItemDetail = () => {
+const ItemDetail = ({navigate, route}) => {
+
+  const {item} = route.params
+
   return (
     <View>
-      <Text>ItemDetail</Text>
+      <Text>{item.category}</Text>
     </View>
   )
 }
