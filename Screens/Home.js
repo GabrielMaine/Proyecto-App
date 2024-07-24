@@ -1,13 +1,10 @@
-import { StyleSheet, Text, View, Button } from 'react-native'
-import Header from '../Components/Header'
+import { StyleSheet, View } from 'react-native'
 import Categories from '../Components/Categories/Categories'
-import Counter from '../Components/Globals/Counter'
 
 const Home = ({navigation}) => {
 
   return (
-    <View>
-        <Header title="Home"/>
+    <View style={styles.main}>
         <Categories navigation={navigation}/>
     </View>
   )
@@ -15,4 +12,8 @@ const Home = ({navigation}) => {
 
 export default Home
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  main:{
+    flex: 1
+  }
+})

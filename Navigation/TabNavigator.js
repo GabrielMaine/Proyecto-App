@@ -1,15 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import CartStack from './CartStack'
 import ShopStack from './ShopStack'
 import OrderStack from './OrderStack'
+import ProfileStack from './ProfileStack'
+import { colors } from '../Global/colors'
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator()
 
 const TabNavigator = () => {
   return (
-    <NavigationContainer>
+    <>
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
@@ -23,7 +25,7 @@ const TabNavigator = () => {
                     tabBarIcon: ({focused}) => {
                         return(
                             <View>
-                                <Text>Shop</Text>
+                                <FontAwesome5 name="store" size={24} color={focused ? colors.blue[400] : "black"} />
                             </View>
                         )
                     }
@@ -35,7 +37,7 @@ const TabNavigator = () => {
                     tabBarIcon: ({focused}) => {
                         return(
                             <View>
-                                <Text>Cart</Text>
+                                <FontAwesome5 name="shopping-cart" size={24} color={focused ? colors.blue[400] : "black"} />
                             </View>
                         )
                     }
@@ -47,13 +49,25 @@ const TabNavigator = () => {
                     tabBarIcon: ({focused}) => {
                         return(
                             <View>
-                                <Text>Orders</Text>
+                                <FontAwesome5 name="receipt" size={24} color={focused ? colors.blue[400] : "black"} />
+                            </View>
+                        )
+                    }
+                }}/>
+            <Tab.Screen 
+                name="ProfileTab" 
+                component={ProfileStack} 
+                options={{
+                    tabBarIcon: ({focused}) => {
+                        return(
+                            <View>
+                                <FontAwesome5 name="user-alt" size={24} color={focused ? colors.blue[400] : "black"} />
                             </View>
                         )
                     }
                 }}/>
         </Tab.Navigator>
-    </NavigationContainer>
+    </>
   )
 }
 
@@ -61,6 +75,6 @@ export default TabNavigator
 
 const styles = StyleSheet.create({
     tabBar:{
-        backgroundColor: "red"
+        backgroundColor: colors.gray[600]
     }
 })

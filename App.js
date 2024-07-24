@@ -1,39 +1,58 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, SafeAreaView, Button, TextInput, FlatList, Modal } from 'react-native';
-import { useEffect, useState } from 'react';
-import TabNavigator from './Navigation/TabNavigator';
 import { Provider } from 'react-redux';
 import Store from './Store';
+import MainNavigator from './Navigation/MainNavigator';
+import { useEffect } from 'react';
+import { useDB } from './db';
+import Toast from 'react-native-toast-message';
+import { StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native';
+import { colors } from './Global/colors';
 
 export default function App() {
 
+  const {initDB} = useDB()
+
+  useEffect(()=>{
+    initDB()
+  })
+
   return (
-    <Provider store={Store}>
-      <TabNavigator />
-    </Provider>
+    <SafeAreaView style={styles.container}>
+      <Provider store={Store}>
+        <MainNavigator />
+        <Toast/>
+      </Provider>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "red",
+    backgroundColor: colors.gray[200],
   },
-  children: {
-    flex: 0.5,
-    backgroundColor: "blue",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderColor: "black",
-  },
-  flatList: {
-    flex: 0.5,
-    backgroundColor: 'green'
-  }
 });
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     backgroundColor: "red",
+//   },
+//   children: {
+//     flex: 0.5,
+//     backgroundColor: "blue",
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//     borderColor: "black",
+//   },
+//   flatList: {
+//     flex: 0.5,
+//     backgroundColor: 'green'
+//   }
+// });
 
   // const [inputData, setInputData] = useState('')
   // const [itemList, setItemList] = useState([])

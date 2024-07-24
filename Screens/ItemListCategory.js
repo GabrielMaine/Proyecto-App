@@ -1,41 +1,65 @@
 import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native'
 import {useState, useEffect} from 'react'
-import Header from '../Components/Header'
-import allProducts from '../Data/products.json'
 import Search from '../Components/ItemListCategory/Search'
-import { useSelector } from 'react-redux'
+import { useGetProductsByCategoryQuery } from '../Services/shopService'
+import ItemListDetail from '../Components/ItemList/ItemListDetail'
+import { colors } from '../Global/colors'
+import Loader from '../Components/Loader/Loader'
 
 const ItemListCategory = ({navigation, route}) => {
 
     const {category} = route.params
+    const {data: productsFilteredByCategory, isLoading, error} = useGetProductsByCategoryQuery(category)
     const [products, setProducts] = useState([])
     const [keyword, setKeyword] = useState("")
 
-    const productsFilteredByCategory = useSelector(state=>state.shopReducer.value.productsFilteredByCategory);
-
     useEffect(()=>{
-        const filteredProducts = productsFilteredByCategory.filter(product=>product.title.toUpperCase().includes(keyword.toUpperCase()))
-        setProducts(filteredProducts)
+        if(productsFilteredByCategory){
+            const filteredProducts = productsFilteredByCategory.filter(product=>product.title.toUpperCase().includes(keyword.toUpperCase()))
+            setProducts(filteredProducts)
+        }
     }, [productsFilteredByCategory, keyword])
 
     return (
     <>
-        <Header title={category||"Products"}/>
-        <Pressable onPress={()=>navigation.goBack()}>
-            <Text>Volver</Text>
-        </Pressable>
-        <Search onSearch={setKeyword}/>
-        <View>
-            <FlatList
-                data={products}
-                renderItem={({item})=><Text>{item.title}</Text>}
-                keyExtractor={item=>item.id}
-            />
+        {isLoading
+        ?<Loader/>
+        :
+        <View style={styles.main}>
+            <View style={styles.searchContainer}>
+                <Search onSearch={setKeyword} navigation={navigation}/>
+            </View>
+            <View style={styles.flatListContainer}>
+                <FlatList
+                    data={products}
+                    renderItem={({item})=><ItemListDetail navigation={navigation} item={item}/>}
+                    keyExtractor={item=>item.slug}
+                />
+            </View>
         </View>
+        }
     </>
     )
 }
 
 export default ItemListCategory
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    main:{
+        height: '100%'
+    },
+    searchContainer:{
+        backgroundColor: colors.gray[100],
+        flexDirection: 'row',
+        // marginHorizontal: 15,
+        padding: 15,
+    },
+    flatListContainer:{
+        backgroundColor: colors.gray[100],
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 10,
+      },
+})

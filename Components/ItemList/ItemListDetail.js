@@ -1,52 +1,45 @@
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native'
-import React from 'react'
+import { useDispatch } from 'react-redux'
+import { setProductIdSelected } from '../../features/Shop/shopSlice'
 import { colors } from '../../Global/colors'
-import CounterLite from './CounterLite'
 
-const CartItem = ({cartItem}) => {
+const ItemListDetail = ({navigation, item}) => {
+
+  const dispatch = useDispatch()
+
   return (
-    // <View>
-    //   <Text>{cartItem.title}</Text>
-    //   <Text>{cartItem.brand}</Text>
-    //   <Text>${cartItem.price} * {cartItem.quantity} unidad/es</Text>
-    // </View>
-    <View style={styles.container}>
+    <Pressable onPress={()=>{
+      dispatch(setProductIdSelected(item.id))
+      navigation.navigate('Detail', {item})
+    }}
+    style={styles.container}
+    >
       <View style={styles.textContainer}>
-        <Text style={styles.title}>{cartItem.title}</Text>
-        <Text style={styles.price}>${cartItem.price}</Text>
-        <View>
-          <CounterLite 
-            max={cartItem.stock}
-            initial={cartItem.quantity}
-            itemSlug={cartItem.slug}
-            item={cartItem}
-          />
-        </View>
+        <Text style={styles.text}>{item.title}</Text>
       </View>
       <View style={styles.imageContainer}>
         <Image
             resizeMode="cover"
             style={styles.image}
-            source={{ uri: cartItem.image }}      
+            source={{ uri: item.image }}      
         />
       </View>
-    </View>
+    </Pressable>
   )
 }
 
-export default CartItem
+export default ItemListDetail
 
 const styles = StyleSheet.create({
   container: {
     height: 130,
     width: 300,
-    margin: 'auto',
-    marginTop: 10,
+    margin: 10,
     paddingLeft: 10,
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: 'center',
-    borderRadius: 1,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: 'black',
     backgroundColor: 'white',

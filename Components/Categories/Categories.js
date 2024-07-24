@@ -1,28 +1,41 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 // import categories from '../../Data/categories.json'
 import CategoryItem from './CategoryItem'
-import { useSelector } from 'react-redux'
+import { useGetCategoriesQuery } from '../../Services/shopService'
+import { colors } from '../../Global/colors'
+import Loader from '../Loader/Loader'
 
 const Categories = ({navigation}) => {
 
-  const categories = useSelector(state=>state.shopReducer.value.categories)
+  const {data, isLoading, error} = useGetCategoriesQuery();
 
   return (
-    <View>
-      <FlatList
-        data={categories}
-        renderItem={({item})=><CategoryItem navigation={navigation} category={item.category}/>}
-        style={styles.flatList}
-        keyExtractor={item=>item.category}
-      />
-    </View>
+    <>
+      {isLoading?
+      <Loader/>
+      :
+      <View style={styles.flatListContainer}>
+        <FlatList
+          data={data}
+          renderItem={({item})=><CategoryItem navigation={navigation} category={item.category}/>}
+          style={styles.flatList}
+          keyExtractor={item=>item.category}
+        />
+      </View>      
+      }    
+    </>
   )
 }
 
 export default Categories
 
 const styles = StyleSheet.create({
-    flatList:{
-        backgroundColor: "green"
-    }
+    flatListContainer:{
+      backgroundColor: colors.gray[100],
+      flex: 1,
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 10,
+    },
 })
