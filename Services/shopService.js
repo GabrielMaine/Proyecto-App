@@ -3,6 +3,7 @@ import { base_url } from '../Firebase/database'
 
 export const shopApi = createApi({
     reducerPath: "shopApi",
+    tagTypes: ["profileImageGet"],
     baseQuery: fetchBaseQuery({baseUrl: base_url}),
     endpoints: (builder)=>({
         getProducts: builder.query({
@@ -31,10 +32,39 @@ export const shopApi = createApi({
             `orders.json?orderBy="user"&equalTo="${user}"`,
           transformResponse: (res) => {
             const transformedResponse = Object.values(res);
+            const parseDate = (dateString) => {
+              const [datePart, timePart] = dateString.split(' ');
+              const [day, month, year] = datePart.split('/').map(Number);
+              const [hours, minutes, seconds] = timePart.split(':').map(Number);
+              return new Date(year, month - 1, day, hours, minutes, seconds);
+            };
+            transformedResponse.sort((a, b) => parseDate(b.createdAt) - parseDate(a.createdAt));
             return transformedResponse;
           },
-        })
+        }),
+        getProfileimage: builder.query({
+          query: (localId) => `profileImages/${localId}.json`,
+          providesTags: ["profileImageGet"],
+        }),
+        postProfileImage: builder.mutation({
+          query: ({ image, localId }) => ({
+            url: `profileImages/${localId}.json`,
+            method: "PUT",
+            body: {
+              image: image,
+            },
+          }),
+          invalidatesTags: ["profileImageGet"],
+        }),
     })
 })
 
-export const { useGetProductsQuery, useGetCategoriesQuery, useGetProductsByCategoryQuery, usePostOrderMutation, useGetOrdersByUserQuery } = shopApi
+export const { 
+  useGetProductsQuery, 
+  useGetCategoriesQuery, 
+  useGetProductsByCategoryQuery, 
+  usePostOrderMutation, 
+  useGetOrdersByUserQuery,
+  useGetProfileimageQuery,
+  usePostProfileImageMutation
+ } = shopApi

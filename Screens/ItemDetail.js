@@ -47,6 +47,7 @@ const ItemDetail = ({navigation, route}) => {
           />
       </View>
       <View style={styles.descriptionContainer}>
+        <Text style={styles.price}>${item.price}</Text>
         <Text style={styles.description}>{item.description}</Text>
       </View>
       <View>
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     // backgroundColor: colors.blue[200]
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center'
   },
@@ -97,6 +98,12 @@ const styles = StyleSheet.create({
   descriptionContainer:{
     // backgroundColor: colors.amber[100],
     padding: 4
+  },
+  price:{
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.blue[600]
   },
   description:{
     textAlign: 'center'

@@ -52,12 +52,10 @@ const styles = StyleSheet.create({
   },
   textContainer:{
     width: '60%',
-    alignSelf: 'flex-start',
-    marginTop: 20,
   },
   text: {
     color: colors.gray[600],
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: 'bold'
     // backgroundColor: colors.red[500]
   },
